@@ -1,10 +1,10 @@
 package nl.boone.quarto;
 
 public class Piece {
-    boolean isSquare;
-    boolean isHollow;
-    boolean isWhite;
-    boolean isTall;
+    private final boolean isSquare;
+    private final boolean isHollow;
+    private final boolean isWhite;
+    private final boolean isTall;
 
     public Piece(boolean isSquare, boolean isHollow, boolean isWhite, boolean isTall) {
         this.isSquare = isSquare;

@@ -1,9 +1,9 @@
 package nl.boone.quarto;
 
 public class Move {
-    private int x;
-    private int y;
-    private Piece piece;
+    private final int x;
+    private final int y;
+    private final Piece piece;
 
     public Move(int x, int y, Piece piece) {
         this.x = x;

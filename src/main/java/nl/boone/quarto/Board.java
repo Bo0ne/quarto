@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    private Piece[][] fields;
-    private List<Piece> piecesLeft;
+    private final Piece[][] fields;
+    private final List<Piece> piecesLeft;
 
     private static final int BOARD_SIZE = 4;
 
@@ -32,13 +32,13 @@ public class Board {
 
         if (x >= BOARD_SIZE || y >= BOARD_SIZE) {
             throw new IllegalMoveException("Move out of bounds");
-        };
+        }
         if (fields[x][y] != null) {
             throw new IllegalMoveException("Field already occupied");
-        };
+        }
         if (!piecesLeft.contains(piece)) {
             throw new IllegalMoveException("Piece already used");
-        };
+        }
 
         fields[x][y] = piece;
         piecesLeft.remove(piece);
@@ -62,15 +62,15 @@ public class Board {
     }
 
     public String toString() {
-        String result = "---------------------\n";
+        StringBuilder result = new StringBuilder("---------------------\n");
         for (int i = 0; i < 4; i++) {
-            result += "|";
+            result.append('|');
             for (int j = 0; j < 4; j++) {
-                result += fields[i][j] + "|";
+                result.append(fields[i][j]).append('|');
             }
-            result += "\n---------------------\n";
+            result.append("\n---------------------\n");
         }
-        return result;
+        return result.toString();
     }
 
 
@@ -78,7 +78,7 @@ public class Board {
         Board board = new Board();
         board.makeMove(new Move(0, 0, board.getPiecesLeft().get(0)));
         board.makeMove(new Move(3, 1, board.getPiecesLeft().get(0)));
-        board.makeMove(new Move(2, 1, board.getPiece(3, 1)));
+        board.makeMove(new Move(3, 3, board.getPiecesLeft().get(0)));
         System.out.println(board);
     }
 }
