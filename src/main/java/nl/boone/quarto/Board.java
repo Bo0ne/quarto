@@ -1,7 +1,5 @@
 package nl.boone.quarto;
 
-import nl.boone.quarto.exceptions.IllegalMoveException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +7,7 @@ public class Board {
     private final Piece[][] fields;
     private final List<Piece> piecesLeft;
 
-    private static final int BOARD_SIZE = 4;
+    static final int BOARD_SIZE = 4;
 
     public Board() {
         fields = new Piece[BOARD_SIZE][BOARD_SIZE];
@@ -25,21 +23,21 @@ public class Board {
         }
     }
 
-    public void makeMove(Move move) throws IllegalMoveException {
-        int x = move.getX();
-        int y = move.getY();
-        Piece piece = move.getPiece();
-
-        if (x >= BOARD_SIZE || y >= BOARD_SIZE) {
-            throw new IllegalMoveException("Move out of bounds");
-        }
-        if (fields[x][y] != null) {
-            throw new IllegalMoveException("Field already occupied");
-        }
-        if (!piecesLeft.contains(piece)) {
-            throw new IllegalMoveException("Piece already used");
+    public void reset() {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (fields[i][j] == null) continue;
+                //Bring back the pieces
+                piecesLeft.add(fields[i][j]);
+                //Set fields to null
+                fields[i][j] = null;
+            }
         }
 
+
+    }
+
+    public void setField(int x, int y, Piece piece) {
         fields[x][y] = piece;
         piecesLeft.remove(piece);
     }
@@ -57,8 +55,74 @@ public class Board {
     }
 
     public boolean hasWinner() {
-        //TODO Implement
+        if (checkDiagonal(0) || checkDiagonal(1)) {
+            return true;
+        }
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (checkColumn(i) || checkRow(i)) {
+                return true;
+            }
+        }
         return false;
+    }
+
+    private boolean checkColumn(int column) {
+        List<Piece> pieces = new ArrayList<>();
+        Piece piece;
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            piece = fields[i][column];
+            if (piece == null) return false;
+            pieces.add(piece);
+        }
+        return checkLine(pieces);
+    }
+
+    private boolean checkRow(int row) {
+        List<Piece> pieces = new ArrayList<>();
+        Piece piece;
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            piece = fields[row][i];
+            if (piece == null) return false;
+            pieces.add(piece);
+        }
+        return checkLine(pieces);
+    }
+
+    private boolean checkDiagonal(int diagonal) {
+        List<Piece> pieces = new ArrayList<>();
+        Piece piece;
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (diagonal == 0) {
+                piece = fields[i][i];
+                if (piece == null) return false;
+                pieces.add(piece);
+            } else {
+                piece = fields[i][BOARD_SIZE - i - 1];
+                if (piece == null) return false;
+                pieces.add(piece);
+            }
+        }
+        return checkLine(pieces);
+    }
+
+    private boolean checkLine(List<Piece> pieces) {
+        if (pieces.size() != BOARD_SIZE) {
+            return false;
+        }
+        Piece first = pieces.get(0);
+        boolean shape = true;
+        boolean color = true;
+        boolean size = true;
+        boolean height = true;
+
+        for (Piece piece : pieces) {
+            shape = shape && piece.isSquare() == first.isSquare();
+            color = color && piece.isWhite() == first.isWhite();
+            size = size && piece.isHollow() == first.isHollow();
+            height = height && piece.isTall() == first.isTall();
+        }
+
+        return shape || color || size || height;
     }
 
     public String toString() {
@@ -74,11 +138,14 @@ public class Board {
     }
 
 
-    public static void main(String[] args) throws IllegalMoveException {
+    public static void main(String[] args) {
         Board board = new Board();
-        board.makeMove(new Move(0, 0, board.getPiecesLeft().get(0)));
-        board.makeMove(new Move(3, 1, board.getPiecesLeft().get(0)));
-        board.makeMove(new Move(3, 3, board.getPiecesLeft().get(0)));
-        System.out.println(board);
+        board.setField(2, 0, board.getPiecesLeft().get(0));
+        board.setField(2, 1, board.getPiecesLeft().get(0));
+        board.setField(2, 2, board.getPiecesLeft().get(0));
+        board.setField(2, 3, board.getPiecesLeft().get(0));
+        System.out.println(board + "\n" + board.getPiecesLeft());
+        board.reset();
+        System.out.println(board + "\n" + board.getPiecesLeft());
     }
 }
