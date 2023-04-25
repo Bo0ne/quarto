@@ -1,14 +1,14 @@
-package nl.boone.quarto;
+package nl.boone.quarto.model;
 
 public class Move {
     private final int x;
     private final int y;
-    private final Piece piece;
+    private final Piece pieceToGive;
 
-    public Move(int x, int y, Piece piece) {
+    public Move(int x, int y, Piece pieceToGive) {
         this.x = x;
         this.y = y;
-        this.piece = piece;
+        this.pieceToGive = pieceToGive;
     }
 
     public int getX() {
@@ -19,7 +19,7 @@ public class Move {
         return y;
     }
 
-    public Piece getPiece() {
-        return piece;
+    public Piece getPieceToGive() {
+        return pieceToGive;
     }
 }

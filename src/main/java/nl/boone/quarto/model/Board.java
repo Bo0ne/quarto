@@ -1,4 +1,4 @@
-package nl.boone.quarto;
+package nl.boone.quarto.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ public class Board {
     private final Piece[][] fields;
     private final List<Piece> piecesLeft;
 
-    static final int BOARD_SIZE = 4;
+    public static final int BOARD_SIZE = 4;
 
     public Board() {
         fields = new Piece[BOARD_SIZE][BOARD_SIZE];
@@ -125,14 +125,22 @@ public class Board {
         return shape || color || size || height;
     }
 
+    public String displayPiecesLeft() {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < piecesLeft.size(); i++) {
+            result.append(i).append(". ").append(piecesLeft.get(i)).append("\n");
+        }
+        return result.toString();
+    }
+
     public String toString() {
-        StringBuilder result = new StringBuilder("---------------------\n");
+        StringBuilder result = new StringBuilder("-------------------------------------\n");
         for (int i = 0; i < 4; i++) {
             result.append('|');
             for (int j = 0; j < 4; j++) {
-                result.append(fields[i][j]).append('|');
+                result.append(i).append('-').append(j).append(':').append(fields[i][j]).append('|');
             }
-            result.append("\n---------------------\n");
+            result.append("\n-------------------------------------\n");
         }
         return result.toString();
     }

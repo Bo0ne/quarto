@@ -1,4 +1,4 @@
-package nl.boone.quarto;
+package nl.boone.quarto.model;
 
 public class Piece {
     private final boolean isSquare;
