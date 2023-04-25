@@ -22,4 +22,13 @@ public class Move {
     public Piece getPieceToGive() {
         return pieceToGive;
     }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "x=" + x +
+                ", y=" + y +
+                ", pieceToGive=" + pieceToGive +
+                '}';
+    }
 }

@@ -128,7 +128,7 @@ public class Board {
     public String displayPiecesLeft() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < piecesLeft.size(); i++) {
-            result.append(i).append(". ").append(piecesLeft.get(i)).append("\n");
+            result.append(i).append(". ").append(piecesLeft.get(i)).append(" ");
         }
         return result.toString();
     }
